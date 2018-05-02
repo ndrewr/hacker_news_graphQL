@@ -22,6 +22,25 @@ const resolvers = {
 			}
 			links.push(link)
 			return link
+		},
+		updateLink: (root, args) => {
+			const targetIndex = links.findIndex((element) => element.id === args.id)
+			console.log('updating...', targetIndex, ~targetIndex)
+			if (~targetIndex) {
+				links[targetIndex] = {
+					id: args.id,
+					url: args.url || links[targetIndex].url,
+					description: args.description || links[targetIndex].description,
+				}
+			}
+			return ~targetIndex ? links[targetIndex] : undefined
+		},
+		deleteLink: (root, args) => {
+			const targetIndex = links.findIndex((elem) => elem.id === args.id)
+			if (~targetIndex) {
+				return	links.splice(targetIndex, 1)[0]
+			}
+			return undefined
 		}
 	},
 /* below resolvers are so trivial they can be omitted
